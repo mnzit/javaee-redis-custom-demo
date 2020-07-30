@@ -96,7 +96,7 @@ public class RedisTemplate {
         }
     }
 
-    public synchronized <T> T hget(Object key, Object field) throws Exception {
+    public synchronized <T> T hget(Object key, Object field) {
         try {
             return (T) valueFromBytes(jedis.hget(keyToBytes(key), keyToBytes(field)));
         } finally {
@@ -158,6 +158,14 @@ public class RedisTemplate {
     public synchronized Long flushAll() {
         try {
             return jedis.flushAll().equals("OK") ? 1L : 0L;
+        } finally {
+            close(jedis);
+        }
+    }
+
+    public synchronized Long ttl(String key) {
+        try {
+            return jedis.ttl(key);
         } finally {
             close(jedis);
         }

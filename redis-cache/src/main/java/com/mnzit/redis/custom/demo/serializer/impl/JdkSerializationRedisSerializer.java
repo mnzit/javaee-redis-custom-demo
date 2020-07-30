@@ -63,5 +63,4 @@ public class JdkSerializationRedisSerializer extends RedisSerializer<Object> {
             }
         }
     }
-
 }
