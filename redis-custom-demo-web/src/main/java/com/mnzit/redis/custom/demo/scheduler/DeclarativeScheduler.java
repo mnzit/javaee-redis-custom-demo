@@ -32,7 +32,7 @@ public class DeclarativeScheduler {
             //String id = String.valueOf(i);
             System.out.println(i);
             String id = "1";
-            executor.execute(new NamePrintingTask(userTokenRepository, id, "name" + i));
+            executor.execute(new NamePrintingTask(userTokenRepository, i+"-Test", "name" + i));
         }
 
         executor.shutdown();
