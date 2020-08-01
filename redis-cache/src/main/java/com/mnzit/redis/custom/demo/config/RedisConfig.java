@@ -1,12 +1,10 @@
 package com.mnzit.redis.custom.demo.config;
 
 import com.mnzit.redis.custom.demo.dto.RedisServerConfig;
-import com.mnzit.redis.custom.demo.loader.RedisResourceLoader;
 import com.mnzit.redis.custom.demo.qualifier.FromJedisPool;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
@@ -23,7 +21,7 @@ public class RedisConfig {
 
     private JedisPool pool = null;
 
-    private static RedisServerConfig redisServerConfig = RedisResourceLoader.getRedisServerConfig();
+    private static final RedisServerConfig redisServerConfig = new RedisServerConfig();
 
     @PostConstruct
     public void initializePool() {
@@ -46,8 +44,7 @@ public class RedisConfig {
 
         return jedisPoolConfig;
     }
-
-    @RequestScoped
+    
     @Produces
     @FromJedisPool
     public Jedis get() {

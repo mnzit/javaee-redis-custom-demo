@@ -1,6 +1,6 @@
+/home/mnzit/NetBeansProjects/redis-custom-demo/redis-cache/src/main/java/com/mnzit/redis/custom/demo/dto/CacheObject.java
 /home/mnzit/NetBeansProjects/redis-custom-demo/redis-cache/src/main/java/com/mnzit/redis/custom/demo/serializer/impl/JdkSerializationRedisSerializer.java
 /home/mnzit/NetBeansProjects/redis-custom-demo/redis-cache/src/main/java/com/mnzit/redis/custom/demo/qualifier/FromJedisPool.java
-/home/mnzit/NetBeansProjects/redis-custom-demo/redis-cache/src/main/java/com/mnzit/redis/custom/demo/loader/RedisResourceLoader.java
 /home/mnzit/NetBeansProjects/redis-custom-demo/redis-cache/src/main/java/com/mnzit/redis/custom/demo/SerializerEnum.java
 /home/mnzit/NetBeansProjects/redis-custom-demo/redis-cache/src/main/java/com/mnzit/redis/custom/demo/dto/ModelBase.java
 /home/mnzit/NetBeansProjects/redis-custom-demo/redis-cache/src/main/java/com/mnzit/redis/custom/demo/util/YamlReader.java

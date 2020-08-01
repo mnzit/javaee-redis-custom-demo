@@ -11,19 +11,19 @@ import lombok.Setter;
 @Setter
 public class RedisServerConfig extends ModelBase {
 
-    private String enableCaching;
-    private String host;
-    private String password;
-    private int port;
-    private int timeout;
-    private int maxTotal;
-    private int maxIdle;
-    private int minIdle;
-    private int maxWaitMillis;
-    private boolean testOnBorrow;
-    private boolean testOnReturn;
-    private boolean testWhileIdle;
-    private int minEvictableIdleTimeMillis;
-    private int timeBetweenEvictionRunsMillis;
-    private int numTestsPerEvictionRun;
+    private String enableCaching = "Y";
+    private String host = "localhost";
+    private String password = "cardserver";
+    private int port = 6379;
+    private int timeout = 200;
+    private int maxTotal = 50;
+    private int maxIdle = 30;
+    private int minIdle = 10;
+    private int maxWaitMillis = 200;
+    private boolean testOnBorrow = true;
+    private boolean testOnReturn = true;
+    private boolean testWhileIdle = true;
+    private int minEvictableIdleTimeMillis = 60000;
+    private int timeBetweenEvictionRunsMillis = 30000;
+    private int numTestsPerEvictionRun = -1;
 }

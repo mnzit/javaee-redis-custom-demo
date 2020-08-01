@@ -20,16 +20,17 @@ public class DeclarativeScheduler {
     @Inject
     private UserTokenRepository userTokenRepository;
 
-    @Schedule(second = "*", minute = "*", hour = "*", persistent = false)
+    @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
     public void atSchedule() throws InterruptedException {
-        long now = System.currentTimeMillis() / 1000;
-        log.info("Fixed rate task with one second initial delay - " + now);
+//        long now = System.currentTimeMillis() / 1000;
+//        log.info("Fixed rate task with one second initial delay - " + now);
 
-        ExecutorService executor = Executors.newFixedThreadPool(50);
+        ExecutorService executor = Executors.newFixedThreadPool(1000);
 
         int count = 1000;
         for (int i = 1; i <= count; i++) {
             //String id = String.valueOf(i);
+            System.out.println(i);
             String id = "1";
             executor.execute(new NamePrintingTask(userTokenRepository, id, "name" + i));
         }

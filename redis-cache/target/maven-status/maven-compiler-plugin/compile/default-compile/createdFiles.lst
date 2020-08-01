@@ -1,4 +1,3 @@
-com/mnzit/redis/custom/demo/loader/RedisResourceLoader.class
 com/mnzit/redis/custom/demo/serializer/impl/JdkSerializationRedisSerializer.class
 com/mnzit/redis/custom/demo/SerializerEnum.class
 com/mnzit/redis/custom/demo/manager/RedisTemplate.class
@@ -6,6 +5,7 @@ com/mnzit/redis/custom/demo/util/YamlReader.class
 com/mnzit/redis/custom/demo/dto/RedisServerConfig.class
 com/mnzit/redis/custom/demo/serializer/RedisSerializer.class
 com/mnzit/redis/custom/demo/qualifier/Serializer.class
+com/mnzit/redis/custom/demo/dto/CacheObject.class
 com/mnzit/redis/custom/demo/dto/ModelBase.class
 com/mnzit/redis/custom/demo/config/RedisConfig.class
 com/mnzit/redis/custom/demo/qualifier/FromJedisPool.class
