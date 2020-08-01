@@ -9,6 +9,7 @@
 <modules>  <module>redis-custom-demo-ear</module>
     <module>redis-custom-demo-web</module>
     <module>redis-cache</module>
-  </modules>
+    <module>ThreadBasics</module>
+</modules>
 </project>
 
