@@ -45,8 +45,6 @@ public class RedisConfig {
         return jedisPoolConfig;
     }
     
-    @Produces
-    @FromJedisPool
     public Jedis get() {
         return pool.getResource();
     }

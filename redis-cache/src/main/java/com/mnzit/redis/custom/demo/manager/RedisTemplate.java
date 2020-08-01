@@ -27,15 +27,19 @@ public class RedisTemplate {
     private RedisSerializer serializer;
 
     public synchronized String set(Object key, Object value) {
-
-        return jedis.set(keyToBytes(key), valueToBytes(value));
-
+        try {
+            return jedis.set(keyToBytes(key), valueToBytes(value));
+        } finally {
+            close(jedis);
+        }
     }
 
     public synchronized Long del(Object key) {
-
-        return jedis.del(keyToBytes(key));
-
+        try {
+            return jedis.del(keyToBytes(key));
+        } finally {
+            close(jedis);
+        }
     }
 
     private static final String DELETE_SCRIPT_IN_LUA
@@ -45,50 +49,67 @@ public class RedisTemplate {
             + "  end";
 
     public synchronized Object deleteKeys(String pattern) {
-
-        return jedis.eval(String.format(DELETE_SCRIPT_IN_LUA, pattern));
-
+        try {
+            return jedis.eval(String.format(DELETE_SCRIPT_IN_LUA, pattern));
+        } finally {
+            close(jedis);
+        }
     }
 
     public synchronized Long hdel(Object key, List<String> subKeys) {
-
-        return jedis.hdel(keyToBytes(key), keyToBytesArray(subKeys));
-
+        try {
+            return jedis.hdel(keyToBytes(key), keyToBytesArray(subKeys));
+        } finally {
+            close(jedis);
+        }
     }
 
     public synchronized Long hdel(Object key, Object subKeys) {
-
-        return jedis.hdel(keyToBytes(key), keyToByteSingle(subKeys));
-
+        try {
+            return jedis.hdel(keyToBytes(key), keyToByteSingle(subKeys));
+        } finally {
+            close(jedis);
+        }
     }
 
     public synchronized String setex(Object key, int seconds, Object value) {
-
-        return jedis.setex(keyToBytes(key), seconds, valueToBytes(value));
-
+        try {
+            return jedis.setex(keyToBytes(key), seconds, valueToBytes(value));
+        } finally {
+            close(jedis);
+        }
     }
 
     public synchronized <T> T get(Object key) {
-
-        return (T) valueFromBytes(jedis.get(keyToBytes(key)));
-
+        try {
+            return (T) valueFromBytes(jedis.get(keyToBytes(key)));
+        } finally {
+            close(jedis);
+        }
     }
 
     public synchronized Long hset(Object key, Object field, Object value) {
-        return jedis.hset(keyToBytes(key), keyToBytes(field), valueToBytes(value));
-
+        try {
+            return jedis.hset(keyToBytes(key), keyToBytes(field), valueToBytes(value));
+        } finally {
+            close(jedis);
+        }
     }
 
     public synchronized <T> T hget(Object key, Object field) {
-
-        return (T) valueFromBytes(jedis.hget(keyToBytes(key), keyToBytes(field)));
-
+        try {
+            return (T) valueFromBytes(jedis.hget(keyToBytes(key), keyToBytes(field)));
+        } finally {
+            close(jedis);
+        }
     }
 
     public synchronized Long expire(Object key, int seconds) {
-
-        return jedis.expire(keyToBytes(key), seconds);
-
+        try {
+            return jedis.expire(keyToBytes(key), seconds);
+        } finally {
+            close(jedis);
+        }
     }
 
     protected synchronized byte[][] keyToBytesArray(List<String> subKeys) {
@@ -135,15 +156,19 @@ public class RedisTemplate {
     }
 
     public synchronized Long flushAll() {
-
-        return jedis.flushAll().equals("OK") ? 1L : 0L;
-
+        try {
+            return jedis.flushAll().equals("OK") ? 1L : 0L;
+        } finally {
+            close(jedis);
+        }
     }
 
     public synchronized Long ttl(String key) {
-
-        return jedis.ttl(key);
-
+        try {
+            return jedis.ttl(key);
+        } finally {
+            close(jedis);
+        }
     }
 
 }
