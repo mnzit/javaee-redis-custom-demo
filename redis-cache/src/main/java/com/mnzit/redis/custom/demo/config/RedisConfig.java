@@ -45,7 +45,7 @@ public class RedisConfig {
         return jedisPoolConfig;
     }
     
-    public Jedis get() {
+    public synchronized Jedis get() {
         return pool.getResource();
     }
 
