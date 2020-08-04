@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="ejb-jar" name="redis-cache:ejb">
+    <output-path>$PROJECT_DIR$/redis-cache/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>redis-cache</module>
+        <packaging>ejb</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="redis-cache-1.0-SNAPSHOT.jar">
+      <element id="artifact" artifact-name="redis-cache:ejb exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="ear" name="redis-custom-demo-ear:ear">
+    <output-path>$PROJECT_DIR$/redis-custom-demo-ear/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>redis-custom-demo-ear</module>
+        <packaging>ear</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="redis-custom-demo-ear-1.0-SNAPSHOT.ear">
+      <element id="artifact" artifact-name="redis-custom-demo-ear:ear exploded" />
+    </root>
+  </artifact>
+</component>

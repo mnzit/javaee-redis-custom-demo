@@ -1,17 +1,17 @@
 package com.mnzit.redis.custom.demo.manager;
 
 import com.mnzit.redis.custom.demo.SerializerEnum;
-import com.mnzit.redis.custom.demo.qualifier.FromJedisPool;
+import com.mnzit.redis.custom.demo.config.RedisConfig;
 import com.mnzit.redis.custom.demo.qualifier.Serializer;
 import com.mnzit.redis.custom.demo.serializer.RedisSerializer;
-import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.util.List;
+
 /**
- *
  * @author Manjit Shakya <manjit.shakya@f1soft.com>
  */
 @Slf4j
@@ -19,14 +19,14 @@ import redis.clients.jedis.Jedis;
 public class RedisTemplate {
 
     @Inject
-    @FromJedisPool
-    private Jedis jedis;
+    private RedisConfig redisConfig;
 
     @Inject
     @Serializer(SerializerEnum.JDK_SERIALIZER)
     private RedisSerializer serializer;
 
     public synchronized String set(Object key, Object value) {
+        Jedis jedis = redisConfig.getJedis();
         try {
             return jedis.set(keyToBytes(key), valueToBytes(value));
         } finally {
@@ -35,6 +35,7 @@ public class RedisTemplate {
     }
 
     public synchronized Long del(Object key) {
+        Jedis jedis = redisConfig.getJedis();
         try {
             return jedis.del(keyToBytes(key));
         } finally {
@@ -49,6 +50,7 @@ public class RedisTemplate {
             + "  end";
 
     public synchronized Object deleteKeys(String pattern) {
+        Jedis jedis = redisConfig.getJedis();
         try {
             return jedis.eval(String.format(DELETE_SCRIPT_IN_LUA, pattern));
         } finally {
@@ -57,6 +59,7 @@ public class RedisTemplate {
     }
 
     public synchronized Long hdel(Object key, List<String> subKeys) {
+        Jedis jedis = redisConfig.getJedis();
         try {
             return jedis.hdel(keyToBytes(key), keyToBytesArray(subKeys));
         } finally {
@@ -65,6 +68,9 @@ public class RedisTemplate {
     }
 
     public synchronized Long hdel(Object key, Object subKeys) {
+
+        log.info("Removing Key from redis :{} and subkeys {}", key, subKeys);
+        Jedis jedis = redisConfig.getJedis();
         try {
             return jedis.hdel(keyToBytes(key), keyToByteSingle(subKeys));
         } finally {
@@ -72,23 +78,30 @@ public class RedisTemplate {
         }
     }
 
-    public synchronized String setex(Object key, int seconds, Object value) {
+    public synchronized void setex(Object key, int seconds, Object value) {
+        Jedis jedis = redisConfig.getJedis();
+
         try {
-            return jedis.setex(keyToBytes(key), seconds, valueToBytes(value));
+            jedis.setex(keyToBytes(key), seconds, valueToBytes(value));
+
         } finally {
             close(jedis);
         }
+
     }
 
     public synchronized <T> T get(Object key) {
+        Jedis jedis = redisConfig.getJedis();
         try {
-            return (T) valueFromBytes(jedis.get(keyToBytes(key)));
+            T t = (T) valueFromBytes(jedis.get(keyToBytes(key)));
+            return t;
         } finally {
             close(jedis);
         }
     }
 
     public synchronized Long hset(Object key, Object field, Object value) {
+        Jedis jedis = redisConfig.getJedis();
         try {
             return jedis.hset(keyToBytes(key), keyToBytes(field), valueToBytes(value));
         } finally {
@@ -97,6 +110,7 @@ public class RedisTemplate {
     }
 
     public synchronized <T> T hget(Object key, Object field) {
+        Jedis jedis = redisConfig.getJedis();
         try {
             return (T) valueFromBytes(jedis.hget(keyToBytes(key), keyToBytes(field)));
         } finally {
@@ -105,6 +119,7 @@ public class RedisTemplate {
     }
 
     public synchronized Long expire(Object key, int seconds) {
+        Jedis jedis = redisConfig.getJedis();
         try {
             return jedis.expire(keyToBytes(key), seconds);
         } finally {
@@ -112,7 +127,7 @@ public class RedisTemplate {
         }
     }
 
-    protected synchronized byte[][] keyToBytesArray(List<String> subKeys) {
+    protected byte[][] keyToBytesArray(List<String> subKeys) {
         byte[][] data = new byte[subKeys.size()][];
         for (int i = 0; i < data.length; i++) {
             data[i] = keyToBytes(subKeys.get(i));
@@ -120,32 +135,32 @@ public class RedisTemplate {
         return data;
     }
 
-    protected synchronized byte[][] keyToBytesArray(Object subKeys) {
+    protected byte[][] keyToBytesArray(Object subKeys) {
         byte[][] data = new byte[0][];
         data[0] = keyToBytes(subKeys);
         return data;
     }
 
-    protected synchronized byte[][] keyToByteSingle(Object subKey) {
+    protected byte[][] keyToByteSingle(Object subKey) {
         byte[][] data = new byte[1][];
         data[0] = keyToBytes(subKey);
         return data;
     }
 
-    private synchronized byte[] keyToBytes(Object key) {
+    private byte[] keyToBytes(Object key) {
         String keyStr = key.toString();
         return serializer.keyToBytes(keyStr);
     }
 
-    private synchronized byte[] valueToBytes(Object value) {
+    private byte[] valueToBytes(Object value) {
         return serializer.valueToBytes(value);
     }
 
-    private synchronized Object valueFromBytes(byte[] bytes) {
+    private Object valueFromBytes(byte[] bytes) {
         return serializer.valueFromBytes(bytes);
     }
 
-    public synchronized void close(Jedis jedis) {
+    public void close(Jedis jedis) {
         if (jedis != null) {
             try {
                 jedis.close();
@@ -155,17 +170,20 @@ public class RedisTemplate {
         }
     }
 
-    public synchronized Long flushAll() {
+    public synchronized Long ttl(String key) {
+        Jedis jedis = redisConfig.getJedis();
         try {
-            return jedis.flushAll().equals("OK") ? 1L : 0L;
+            return jedis.ttl(key);
         } finally {
             close(jedis);
         }
+
     }
 
-    public synchronized Long ttl(String key) {
+    public Long flushAll() {
+        Jedis jedis = redisConfig.getJedis();
         try {
-            return jedis.ttl(key);
+            return jedis.flushAll().equals("OK") ? 1L : 0L;
         } finally {
             close(jedis);
         }

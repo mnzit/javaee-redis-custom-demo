@@ -20,7 +20,7 @@ public class DeclarativeScheduler {
     @Inject
     private UserTokenRepository userTokenRepository;
 
-    @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
+    @Schedule()
     public void atSchedule() throws InterruptedException {
 //        long now = System.currentTimeMillis() / 1000;
 //        log.info("Fixed rate task with one second initial delay - " + now);

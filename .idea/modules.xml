@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/redis-cache/redis-cache.iml" filepath="$PROJECT_DIR$/redis-cache/redis-cache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redis-custom-demo.iml" filepath="$PROJECT_DIR$/redis-custom-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redis-custom-demo-ear/redis-custom-demo-ear.iml" filepath="$PROJECT_DIR$/redis-custom-demo-ear/redis-custom-demo-ear.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redis-custom-demo-web/redis-custom-demo-web.iml" filepath="$PROJECT_DIR$/redis-custom-demo-web/redis-custom-demo-web.iml" />
+    </modules>
+  </component>
+</project>

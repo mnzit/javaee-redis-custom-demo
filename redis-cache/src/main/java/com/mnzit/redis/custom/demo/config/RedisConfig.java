@@ -1,31 +1,34 @@
 package com.mnzit.redis.custom.demo.config;
 
 import com.mnzit.redis.custom.demo.dto.RedisServerConfig;
-import com.mnzit.redis.custom.demo.qualifier.FromJedisPool;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Singleton;
+
 /**
- *
  * @author Manjit Shakya <manjit.shakya@f1soft.com>
  */
 @Slf4j
-@ApplicationScoped
+@Singleton
 public class RedisConfig {
 
-    private JedisPool pool = null;
+    private JedisPool jedisPool = null;
 
     private static final RedisServerConfig redisServerConfig = new RedisServerConfig();
 
     @PostConstruct
     public void initializePool() {
-        pool = new JedisPool(configureJedisPool(), redisServerConfig.getHost(), redisServerConfig.getPort(), redisServerConfig.getTimeout(), redisServerConfig.getPassword());
+        log.info("Initalizing Jedis Pool");
+        initializeJedis();
+    }
+
+    private JedisPool initializeJedis() {
+        jedisPool = new JedisPool(configureJedisPool(), redisServerConfig.getHost(), redisServerConfig.getPort(), redisServerConfig.getTimeout(), redisServerConfig.getPassword());
+        return jedisPool;
     }
 
     private JedisPoolConfig configureJedisPool() {
@@ -44,15 +47,15 @@ public class RedisConfig {
 
         return jedisPoolConfig;
     }
-    
-    @Produces
-    @FromJedisPool
-    public Jedis get() {
-        return pool.getResource();
-    }
 
-    @PreDestroy
-    public void closePool() {
-        pool.close();
+    public synchronized Jedis getJedis() {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+        } catch (Exception e) {
+            log.error("Get jedis error : " + e);
+        }
+        log.info("jedis obj : {}", jedis);
+        return jedis;
     }
 }

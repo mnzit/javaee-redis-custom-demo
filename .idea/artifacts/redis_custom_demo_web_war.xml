@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="redis-custom-demo-web:war">
+    <output-path>$PROJECT_DIR$/redis-custom-demo-web/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>redis-custom-demo-web</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="redis-custom-demo-web-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="redis-custom-demo-web:war exploded" />
+    </root>
+  </artifact>
+</component>
